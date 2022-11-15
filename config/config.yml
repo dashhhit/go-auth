@@ -1,0 +1,7 @@
+app:
+  name: 'auth-golang'
+  version: '1.0.0'
+
+http:
+  port: '8080'
+  
