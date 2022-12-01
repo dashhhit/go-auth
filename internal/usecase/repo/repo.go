@@ -25,7 +25,7 @@ func (r *Repo) AddUser(ctx context.Context, user entity.User) error {
 	return nil
 }
 
-func (r *Repo) GetUser(ctx context.Context, id string) (*entity.User, error) {
+func (r *Repo) GetUserById(ctx context.Context, id string) (*entity.User, error) {
 	user := &entity.User{}
 
 	sql := `SELECT id, first_name, last_name, gender, email FROM users WHERE id=$1;`
@@ -40,13 +40,29 @@ func (r *Repo) GetUser(ctx context.Context, id string) (*entity.User, error) {
 
 }
 
+func (r *Repo) GetUserByEmail(ctx context.Context, email string) (*entity.User, error) {
+	user := &entity.User{}
+
+	sql := `SELECT * FROM users WHERE email=$1;`
+
+	row := r.QueryRow(ctx, sql, email)
+	err := row.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Gender, &user.Email, &user.Password)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+
+}
+
 func (r *Repo) IsExistsEmail(ctx context.Context, email string) bool {
 	var (
 		result int
 	)
 	sql := `SELECT DISTINCT 1 FROM users WHERE email=$1`
+
 	row := r.QueryRow(ctx, sql, email)
 	err := row.Scan(&result)
+
 	if err != nil {
 		return false
 	}

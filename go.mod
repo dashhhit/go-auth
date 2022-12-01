@@ -5,7 +5,9 @@ go 1.17
 require (
 	github.com/Eun/go-hit v0.5.23
 	github.com/gofiber/fiber/v2 v2.39.0
+	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/jackc/pgx/v4 v4.17.2
+	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.6
 	github.com/pressly/goose/v3 v3.7.0
 	github.com/stretchr/testify v1.8.1

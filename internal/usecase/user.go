@@ -35,7 +35,7 @@ func (c *UserUseCase) Create(ctx context.Context, user entity.User) error {
 }
 
 func (c *UserUseCase) Get(ctx context.Context, id string) (*entity.User, error) {
-	user, err := c.repository.GetUser(ctx, id)
+	user, err := c.repository.GetUserById(ctx, id)
 	return user, err
 }
 

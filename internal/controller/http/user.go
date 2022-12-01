@@ -23,9 +23,9 @@ func newUsersRoute(router fiber.Router, t usecase.UserHandlers) {
 func (r *userRoutes) createUser(ctx *fiber.Ctx) error {
 	user := entity.User{}
 	if err := ctx.BodyParser(&user); err != nil {
-		return ctx.Status(500).JSON(fiber.Map{
+		return ctx.Status(400).JSON(fiber.Map{
 			"error": fiber.Map{
-				"code":    500,
+				"code":    400,
 				"message": "invalid input",
 			},
 		})

@@ -6,9 +6,12 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
-func SetupRoutes(app *fiber.App, t usecase.UserHandlers) {
+func SetupRoutes(app *fiber.App, user usecase.UserHandlers, login usecase.LoginHandlers) {
 	app.Use(cors.New())
 
-	user := app.Group("/user")
-	newUsersRoute(user, t)
+	userGroup := app.Group("/user")
+	newUsersRoute(userGroup, user)
+
+	auth := app.Group("/auth")
+	newLoginRoute(auth, login)
 }

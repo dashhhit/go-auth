@@ -19,12 +19,13 @@ func RunApp(cfg *config.Config) {
 	if err != nil {
 		log.Fatalf("connect to database failed: %v\n", err)
 	}
-
-	userUseCase := usecase.New(repo.New(pg))
+	repository := repo.New(pg)
+	userUseCase := usecase.New(repository)
+	loginUseCase := usecase.NewLoginUseCase(repository)
 
 	app := fiber.New()
 
-	router.SetupRoutes(app, userUseCase)
+	router.SetupRoutes(app, userUseCase, loginUseCase)
 
 	migrations.SetupGoose(poolConfig.ConnString())
 
