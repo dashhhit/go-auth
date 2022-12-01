@@ -1,8 +1,14 @@
 package router
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"auth-golang/internal/usecase"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+)
 
-func SetupRoutes(app *fiber.App) {
+func SetupRoutes(app *fiber.App, t usecase.UserHandlers) {
+	app.Use(cors.New())
+
 	user := app.Group("/user")
-	UsersRoute(user)
+	newUsersRoute(user, t)
 }

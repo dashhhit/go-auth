@@ -4,6 +4,8 @@ import (
 	"auth-golang/config"
 	router "auth-golang/internal/controller/http"
 	"auth-golang/internal/migrations"
+	"auth-golang/internal/usecase"
+	"auth-golang/internal/usecase/repo"
 	"auth-golang/pkg/repo"
 	"github.com/gofiber/fiber/v2"
 	"log"
@@ -11,15 +13,18 @@ import (
 
 func RunApp(cfg *config.Config) {
 
-	app := fiber.New()
-	router.SetupRoutes(app)
-
 	poolConfig, _ := postgres.NewPoolConfig(&cfg.Postgres)
 
-	_, err := postgres.NewPool(poolConfig)
+	pg, err := postgres.NewPool(poolConfig)
 	if err != nil {
 		log.Fatalf("connect to database failed: %v\n", err)
 	}
+
+	userUseCase := usecase.New(repo.New(pg))
+
+	app := fiber.New()
+
+	router.SetupRoutes(app, userUseCase)
 
 	migrations.SetupGoose(poolConfig.ConnString())
 
